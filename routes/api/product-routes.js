@@ -7,12 +7,63 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+  Product.findAll({
+    include: [
+      {
+        model: Category,
+        attributes: ["id", "categoy_name"]
+      },
+      {
+        model: ProductTag,
+        attributes: ["id", "product_id", "tag_id"],
+        include: 
+        {
+          model: Tag,
+          attributes: ["id", "tag_name"]
+        }
+      }
+    ]
+  })
+  .then(productDB=> res.json(productDB))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 // get one product
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  Product.findOne({
+    include: [
+      {
+        model: Category,
+        attributes: ["id", "categoy_name"]
+      },
+      {
+        model: ProductTag,
+        attributes: ["id", "product_id", "tag_id"],
+        include: 
+        {
+          model: Tag,
+          attributes: ["id", "tag_name"]
+        }
+      }
+    ],
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(productDB => {
+    if (!productDB){
+      res.status(404).json({ message: "No matching data found with this id"});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 // create new product
@@ -91,6 +142,20 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(productDB => {
+    if (!productDB){
+      res.status(404).json({ message: "No matching data found with this id"});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
