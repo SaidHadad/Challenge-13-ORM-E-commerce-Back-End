@@ -35,6 +35,7 @@ router.get('/:id', (req, res) => {
     if (!tagDB){
       res.status(404).json({ message: "No matching data found with this id"});
     }
+    res.json(tagDB);
   })
   .catch(err => {
     console.log(err);
@@ -45,14 +46,15 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new tag
   Tag.create({
-    tag_name: req.body.tag_name,
+    tag_name: req.body.tag_name
   })
-  .then(tagDB => res.json(tagDB))
-  .catch(err => {
+  .then((dbTagData) => res.json(dbTagData))
+  .catch((err) => {
     console.log(err);
-    res.status(500).json(err);
+    res.status(400).json(err);
   });
 });
+
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
@@ -67,7 +69,7 @@ router.put('/:id', (req, res) => {
         res.status(404).json({ message: 'No matching data found with this id' });
         return;
       }
-      res.json(dbCommentData);
+      res.json(tagDB);
     })
     .catch(err => {
       console.log(err);
@@ -87,7 +89,7 @@ router.delete('/:id', (req, res) => {
       res.status(404).json({ message: 'No matching data found with this id' });
       return;
     }
-    res.json(dbCommentData);
+    res.json(tagDB);
   })
   .catch(err => {
     console.log(err);

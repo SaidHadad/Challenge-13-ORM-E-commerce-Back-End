@@ -35,6 +35,7 @@ router.get('/:id', (req, res) => {
     if (!categoryDB){
       res.status(404).json({ message: "No matching data found with this id"});
     }
+    res.json(categoryDB);
   })
   .catch(err => {
     console.log(err);
@@ -68,6 +69,7 @@ router.put('/:id', (req, res) => {
     if (!categoryDB){
       res.status(404).json({ message: "No matching data found with this id"});
     }
+    res.json(categoryDB);
   })
   .catch(err => {
     console.log(err);
@@ -86,6 +88,7 @@ router.delete('/:id', (req, res) => {
     if (!categoryDB){
       res.status(404).json({ message: "No matching data found with this id"});
     }
+    res.json(categoryDB);
   })
   .catch(err => {
     console.log(err);

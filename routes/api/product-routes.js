@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     include: [
       {
         model: Category,
-        attributes: ["id", "categoy_name"]
+        attributes: ["id", "category_name"]
       },
       {
         model: Tag,
@@ -31,24 +31,26 @@ router.get('/:id', (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   Product.findOne({
+    where: {
+      id: req.params.id
+    },
     include: [
       {
         model: Category,
-        attributes: ["id", "categoy_name"]
+        attributes: ["id", "category_name"]
       },
       {
         model: Tag,
-        attributes: ["id", "tag_name"],
+        attributes: ["id", "tag_name"]
       }
     ],
-    where: {
-      id: req.params.id
-    }
   })
   .then(productDB => {
     if (!productDB){
       res.status(404).json({ message: "No matching data found with this id"});
+      return;
     }
+    res.json(productDB);
   })
   .catch(err => {
     console.log(err);
@@ -147,6 +149,7 @@ router.delete('/:id', (req, res) => {
     if (!productDB){
       res.status(404).json({ message: "No matching data found with this id"});
     }
+    res.json(productDB);
   })
   .catch(err => {
     console.log(err);
