@@ -39,7 +39,7 @@
   ## Built With
 
   * JavaScript
-  * node.js
+  * Node.js
   * MySQL
   * Express.js
   * Sequelize
